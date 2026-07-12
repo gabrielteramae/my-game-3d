@@ -7,7 +7,7 @@ Protótipo de RPG de ação e sobrevivência em 3D, construído do zero no Godot
 
 ## Sobre
 
-Uma fatia vertical de um RPG de sobrevivência inspirado em jogos como Enshrouded e Valheim: personagem em terceira pessoa, câmera orbital controlada pelo mouse e uma base sólida de movimentação física, pensada pra ser expandida com coleta de recursos, sobrevivência e combate.
+Um RPG de sobrevivência inspirado em jogos como Enshrouded e Valheim: personagem em terceira pessoa, câmera orbital controlada pelo mouse e uma base sólida de movimentação física, pensada pra ser expandida com coleta de recursos, sobrevivência e combate.
 
 ## Funcionalidades
 
