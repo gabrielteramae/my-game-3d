@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://cq7ytwqfhecf2"]
+
+[ext_resource type="Script" uid="uid://4j4jcc3sk100" path="res://player.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://dfxwektd4qv4b" path="res://camera_rig.gd" id="2_0xm2m"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_cyvu2"]
+size = Vector2(30, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ffelx"]
+size = Vector3(30, 0.1, 30)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_01hy7"]
+sky_top_color = Color(0.2901961, 0.5647059, 0.8509804, 1)
+sky_horizon_color = Color(0.6901961, 0.8509804, 0.9411765, 1)
+
+[sub_resource type="Sky" id="Sky_ffelx"]
+sky_material = SubResource("ProceduralSkyMaterial_01hy7")
+
+[sub_resource type="Environment" id="Environment_cyvu2"]
+background_mode = 2
+sky = SubResource("Sky_ffelx")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_cyvu2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ffelx"]
+
+[node name="Main" type="Node3D" unique_id=1835346983]
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=57468616]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=517484477]
+mesh = SubResource("PlaneMesh_cyvu2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1269200514]
+shape = SubResource("BoxShape3D_ffelx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=599440144]
+transform = Transform3D(0.8660254, 0.35355338, -0.35355338, 0, 0.70710677, 0.70710677, 0.5, -0.6123724, 0.6123724, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1921273144]
+environment = SubResource("Environment_cyvu2")
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=460739558]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_ig7tw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player" unique_id=630518077]
+mesh = SubResource("CapsuleMesh_cyvu2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=1980229702]
+shape = SubResource("CapsuleShape3D_ffelx")
+
+[node name="CameraRig" type="Node3D" parent="Player" unique_id=2093213209]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+script = ExtResource("2_0xm2m")
+
+[node name="Camera3D" type="Camera3D" parent="Player/CameraRig" unique_id=171928549]
