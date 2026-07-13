@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://4j4jcc3sk100" path="res://player.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://dfxwektd4qv4b" path="res://camera_rig.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://bvqlju05p0rvt" path="res://pedra.gd" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://dbgh7illybvor" path="res://hud.gd" id="4_1bvp3"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_cyvu2"]
 size = Vector2(30, 30)
@@ -23,6 +25,12 @@ sky = SubResource("Sky_ffelx")
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_cyvu2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ffelx"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_cyvu2"]
+radius = 0.4
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ffelx"]
+radius = 0.4
 
 [node name="Main" type="Node3D" unique_id=1835346983]
 
@@ -55,3 +63,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 script = ExtResource("2_0xm2m")
 
 [node name="Camera3D" type="Camera3D" parent="Player/CameraRig" unique_id=171928549]
+
+[node name="Pedra" type="Area3D" parent="." unique_id=380095438]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.4, 3)
+script = ExtResource("3_h2yge")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pedra" unique_id=500347065]
+mesh = SubResource("SphereMesh_cyvu2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pedra" unique_id=1052141581]
+shape = SubResource("SphereShape3D_ffelx")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1917710436]
+script = ExtResource("4_1bvp3")
+
+[node name="InventoryLabel" type="Label" parent="HUD" unique_id=396422750]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Pedra: 0"
+
+[connection signal="body_entered" from="Pedra" to="Pedra" method="_on_body_entered"]
