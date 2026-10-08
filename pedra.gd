@@ -1,13 +1,10 @@
-extends Node
+extends Area3D
 
-var items: Dictionary = {}
+func _ready() -> void:
+	body_entered.connect(_on_body_entered)
 
-signal item_added(item_name, total)
-
-func add_item(item_name: String, amount: int = 1):
-	if items.has(item_name):
-		items[item_name] += amount
-	else:
-		items[item_name] = amount
-	emit_signal("item_added", item_name, items[item_name])
-	print("Inventário: ", items)
+func _on_body_entered(body: Node3D) -> void:
+	if body.name != "Player":
+		return
+	Inventory.add_item("pedra", 1)
+	queue_free()

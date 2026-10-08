@@ -27,5 +27,3 @@ func _physics_process(delta):
 	move_and_slide()
 
 
-func _on_pedra_body_entered(body: Node3D) -> void:
-	pass # Replace with function body.
