@@ -1,62 +1,53 @@
-# My Game 3D
+# My Game 3D — protótipo 3D no Godot
 
 ![Godot](https://img.shields.io/badge/Godot-4.7-478CBF?style=flat&logo=godotengine&logoColor=white)
-![GDScript](https://img.shields.io/badge/GDScript-3D-355570?style=flat&logo=godotengine&logoColor=white)
+![GDScript](https://img.shields.io/badge/GDScript-478CBF?style=flat&logo=godotengine&logoColor=white)
 
-Protótipo de RPG de ação e sobrevivência em 3D, construído do zero no Godot Engine.
+Cena 3D pequena: um personagem anda no plano, a câmera orbita com o mouse e uma esfera some ao ser tocada, somando uma pedra no inventário. `project.godot` declara a feature `4.7` e o renderer Forward Plus. Não há corrida, combate, craft nem sobrevivência.
 
-## Sobre
+| Entrada | Efeito |
+|---|---|
+| A D W S | `move_left`, `move_right`, `move_forward`, `move_back` |
+| Espaço (`ui_accept`) | Pulo se estiver no chão (`JUMP_VELOCITY` 4,5) |
+| Mouse | `CameraRig` gira. O pitch fica entre -0,8 e 0,8. O mouse começa capturado |
+| Encostar na esfera | `pedra.gd` chama `Inventory.add_item("pedra", 1)` e remove o nó |
 
-Um RPG de sobrevivência inspirado em jogos como Enshrouded e Valheim: personagem em terceira pessoa, câmera orbital controlada pelo mouse e uma base sólida de movimentação física, pensada pra ser expandida com coleta de recursos, sobrevivência e combate.
-
-## Funcionalidades
-
-- **Movimentação em terceira pessoa**: andar, correr e pular com física real via `CharacterBody3D`
-- **Câmera orbital relativa ao mouse**: gira em torno do personagem, com limite vertical pra evitar inversão de ângulo
-- **Movimento relativo à câmera**: a direção do personagem é sempre calculada a partir de para onde a câmera está olhando, não de um eixo fixo do mundo
-- **Cena base com iluminação e céu**: `DirectionalLight3D` simulando luz de fim de tarde e `WorldEnvironment` com céu procedural
-
-## Como funciona o movimento relativo à câmera
-
-Como o personagem não gira sozinho (quem gira é a câmera), a direção do movimento é calculada usando o ângulo (`yaw`) do `CameraRig`:
-
-```gdscript
-var yaw = camera_rig.rotation.y
-var direction = Vector3(input_dir.x, 0, input_dir.y).rotated(Vector3.UP, yaw)
-```
-
-Isso garante que apertar "frente" sempre leve o personagem pra onde a câmera está apontando, independente de quantas voltas você já deu com o mouse.
+O movimento usa o yaw da câmera, não o eixo fixo do mundo: `Vector3(input_dir.x, 0, input_dir.y).rotated(Vector3.UP, yaw)`. Velocidade 5. Gravidade 9,8. A câmera fica a distância 6 e altura 2.
 
 ## Stack
 
-- Godot Engine 4.7
+- Godot 4.7 (`config/features` = `4.7`, `Forward Plus`)
 - GDScript
-- Nodes nativos 3D (`CharacterBody3D`, `Camera3D`, `WorldEnvironment`, `DirectionalLight3D`)
+- Física 3D: Jolt (`3d/physics_engine`)
+- No Windows o driver de render pedido é `d3d12`
 
----
-
-## Como rodar localmente
-
-1. Baixa o [Godot Engine 4.7](https://godotengine.org/download) (versão Standard, sem precisar da .NET)
-2. Abre o Godot → **Import** → seleciona a pasta do projeto (`project.godot`)
-3. Clica em **Run** (▶️) ou aperta `F5`
-
-## Estrutura do projeto
+## Estrutura
 
 ```
 my-game-3d/
-├── main.tscn          # Cena principal (chão, luz, ambiente, player)
-├── player.gd          # Script de movimentação do personagem
-├── camera_rig.gd       # Script da câmera orbital em terceira pessoa
-└── project.godot      # Configurações do projeto
+├── project.godot      nome my-game-3d, cena principal main.tscn
+├── main.tscn          chão, luz, céu procedural, player, pedra, HUD
+├── player.gd          CharacterBody3D
+├── camera_rig.gd      órbita da Camera3D
+├── pedra.gd           Area3D em (3, 0,4, 3)
+├── inventory.gd       autoload Inventory (dicionário + sinal item_added)
+├── hud.gd             label "Pedra: N"
+└── icon.svg
 ```
 
-## Roadmap
+O player é uma cápsula. A pedra é uma esfera de raio 0,4. O chão é um plano de 30×30. Não há testes.
 
-- [x] Cena base (chão, luz, céu)
-- [x] Movimentação em terceira pessoa + câmera orbital
-- [ ] Coleta de recursos (madeira, pedra)
-- [ ] Inventário simples
-- [ ] Sistema de sobrevivência (fogueira, status)
-- [ ] Combate básico (inimigo com IA simples)
-- [ ] Assets visuais e exportação para web
+## Como rodar
+
+Pré-requisito: Godot 4.7, edição padrão (o projeto não usa .NET).
+
+```bash
+git clone https://github.com/gabrielteramae/my-game-3d.git
+cd my-game-3d
+```
+
+No Godot: Import, selecione `project.godot`, depois F5. WASD anda, Espaço pula, o mouse olha em volta. Ande até a esfera à frente e à direita; o HUD passa de `Pedra: 0` para `Pedra: 1` e a esfera some. O script também imprime o dicionário no output do editor.
+
+---
+
+© 2026 Gabriel Teramae Chan
